@@ -55,6 +55,7 @@ package rsa
 		if (n == -1){
  			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_error_string(ERR_get_error(),NULL));
 		}
+		RSA_free(private_key);
 		return n;
 	}
 
@@ -68,6 +69,7 @@ package rsa
 		if (n == -1){
  			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_error_string(ERR_get_error(),NULL));
 		}
+		RSA_free(public_key);
 		return n;
 
 	}
