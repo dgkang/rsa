@@ -22,7 +22,7 @@ package rsa
  		RSA * public_key = RSA_new();
 
  		if (!PEM_read_RSA_PUBKEY(fp, &public_key, NULL, NULL)){
- 			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_reason_error_string(ERR_get_error()));
+ 			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_error_string(ERR_get_error(),NULL));
 			RSA_free(public_key);
 			return NULL;
 		}
@@ -38,7 +38,7 @@ package rsa
  		RSA * private_key = RSA_new();
 
  		if (!PEM_read_RSAPrivateKey(fp, &private_key, NULL, NULL)){
- 			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_reason_error_string(ERR_get_error()));
+ 			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_error_string(ERR_get_error(),NULL));
 			RSA_free(private_key);
 			return NULL;
 		}
@@ -53,7 +53,7 @@ package rsa
 		*to = (char*)malloc(sizeof(char) * RSA_size(private_key));
 		int n = RSA_private_encrypt(fromSize,from,(unsigned char *)*to,private_key,padding);
 		if (n == -1){
-			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_reason_error_string(ERR_get_error()));
+ 			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_error_string(ERR_get_error(),NULL));
 		}
 		return n;
 	}
@@ -66,7 +66,7 @@ package rsa
 		*to = (char*)malloc(sizeof(char) * RSA_size(public_key));
 		int n = RSA_public_decrypt(fromSize,from,(unsigned char *)*to,public_key,padding);
 		if (n == -1){
-			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_reason_error_string(ERR_get_error()));
+ 			snprintf(last_error_string,sizeof(last_error_string),"%s",ERR_error_string(ERR_get_error(),NULL));
 		}
 		return n;
 
@@ -113,4 +113,12 @@ func PrivateEncrypt(from []byte, pem string, padding int) ([]byte, error) {
 		C.free(unsafe.Pointer(to))
 		return m, nil
 	}
+}
+
+func Destroy() {
+	C.ERR_free_strings()
+}
+
+func init() {
+	C.ERR_load_crypto_strings()
 }
