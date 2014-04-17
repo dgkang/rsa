@@ -4,9 +4,10 @@ import "os"
 import "log"
 import "io/ioutil"
 import "github.com/dgkang/rsa/rsa"
+import "fmt"
 
 func main() {
-	file, err := os.Open("./test.txt") 
+	file, err := os.Open("./test.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,6 +25,9 @@ func main() {
 
 	buf, e := rsa.PublicDecrypt(brsa, "./public.pem", rsa.RSA_PKCS1_PADDING)
 	if e == nil {
-		fmt.Printf("D: %s", string(buf))
+		fmt.Printf("Decrypt: %s", string(buf))
+	} else {
+		fmt.Printf("%s\n", e.Error())
+		return
 	}
 }
