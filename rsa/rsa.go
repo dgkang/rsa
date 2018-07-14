@@ -118,9 +118,9 @@ func PrivateEncrypt(from []byte, pem string, padding int) ([]byte, error) {
 }
 
 func Destroy() {
-	C.ERR_free_strings()
+	C.ERR_clear_error()
 }
 
 func init() {
-	C.ERR_load_crypto_strings()
+	C.ERR_load_ERR_strings()
 }
