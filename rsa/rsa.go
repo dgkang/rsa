@@ -1,7 +1,8 @@
 package rsa
 
 /*
-	#cgo LDFLAGS: -lssl -lcrypto
+	#cgo CFLAGS: -I/usr/local/opt/openssl/include
+	#cgo LDFLAGS: -L/usr/include/openssl -Lmy/library/src -lcrypto
 	#include <openssl/rsa.h>
 	#include <openssl/engine.h>
 	#include <openssl/pem.h>
